@@ -1,4 +1,4 @@
-# Wise Economic Decisions
+# Wise Economical Decisions
 
 A World of Warcraft Forever addon for looting with full bags. When an item in the loot window won't fit, it tells you which item in your bags to throw away and how much gold you gain by swapping.
 
