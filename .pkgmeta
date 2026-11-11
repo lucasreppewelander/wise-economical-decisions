@@ -1,0 +1,12 @@
+package-as: WiseEconomicDecisions
+
+ignore:
+  - tests
+  - screenshots
+  - docs
+  - .superpowers
+  - .gitignore
+
+manual-changelog:
+  filename: CHANGELOG.md
+  markup-type: markdown
