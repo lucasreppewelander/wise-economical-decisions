@@ -54,3 +54,22 @@ function ns.MustHaveKind(item)
     if IsTool(item) then return "tool" end
     return nil
 end
+
+-- Money as text with coin icons, e.g. "41 [g] 20 [s] 05 [c]".
+-- Our own formatter: GetCoinTextureString doesn't exist on WoW Forever.
+ns.GOLD_ICON = "|TInterface\\MoneyFrame\\UI-GoldIcon:12:12:0:0|t"
+ns.SILVER_ICON = "|TInterface\\MoneyFrame\\UI-SilverIcon:12:12:0:0|t"
+ns.COPPER_ICON = "|TInterface\\MoneyFrame\\UI-CopperIcon:12:12:0:0|t"
+
+function ns.FormatMoney(copper)
+    copper = math.max(0, math.floor(copper or 0))
+    local g = math.floor(copper / 10000)
+    local s = math.floor((copper % 10000) / 100)
+    local c = copper % 100
+    if g > 0 then
+        return string.format("%d %s %02d %s %02d %s", g, ns.GOLD_ICON, s, ns.SILVER_ICON, c, ns.COPPER_ICON)
+    elseif s > 0 then
+        return string.format("%d %s %02d %s", s, ns.SILVER_ICON, c, ns.COPPER_ICON)
+    end
+    return string.format("%d %s", c, ns.COPPER_ICON)
+end

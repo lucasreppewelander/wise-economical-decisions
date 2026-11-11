@@ -16,13 +16,7 @@ local MUST_LINES = {
 }
 local MUST_LABELS = { quest = "quest item", key = "key", tool = "profession tool" }
 
-local COPPER_ICON = "|TInterface\\MoneyFrame\\UI-CopperIcon:0:0:2:0|t"
-
-local function Money(copper)
-    copper = math.floor(copper or 0)
-    if copper <= 0 then return "0" .. COPPER_ICON end
-    return GetCoinTextureString(copper)
-end
+local Money = ns.FormatMoney
 
 local function SetQualityColor(fs, quality)
     local c = ITEM_QUALITY_COLORS and ITEM_QUALITY_COLORS[quality or 1]
