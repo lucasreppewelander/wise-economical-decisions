@@ -83,6 +83,7 @@ local function Create()
     frame = CreateFrame("Frame", "WiseEconomicDecisionsCard", UIParent, "BackdropTemplate")
     frame:SetWidth(WIDTH)
     frame:SetFrameStrata("DIALOG")
+    frame:SetClampedToScreen(true)
     frame:SetBackdrop({
         bgFile = "Interface\\Tooltips\\UI-Tooltip-Background",
         edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
@@ -129,7 +130,7 @@ end
 
 local function Anchor(useFallback)
     frame:ClearAllPoints()
-    if not useFallback and LootFrame and LootFrame:IsShown() then
+    if not useFallback and LootFrame and LootFrame:IsVisible() then
         frame:SetPoint("TOPLEFT", LootFrame, "TOPRIGHT", 4, 0)
     else
         frame:SetPoint("LEFT", UIParent, "CENTER", 150, 0)

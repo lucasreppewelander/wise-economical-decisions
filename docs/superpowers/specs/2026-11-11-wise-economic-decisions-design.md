@@ -29,7 +29,7 @@ Success: you hit full bags, glance right of the loot window, and know in a secon
 ## Non-goals
 
 - Deleting, vendoring, or moving items. No auto-anything.
-- Bank, mail, keyring.
+- Bank and mail. (The keyring only counts as room for looted keys, never as a source of drops.)
 - Group-loot roll windows (Need/Greed). Only the normal loot window.
 - Money/coin loot (coins never need a bag slot).
 - Tooltips or price display anywhere other than the card.

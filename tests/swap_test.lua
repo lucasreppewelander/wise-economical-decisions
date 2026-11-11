@@ -65,4 +65,13 @@ T.eq("same item excluded", ns.ChooseSwap({ linen(5) }, { bag(0, 0, { linen(20) }
 local ore = I{ itemID=700, vendor=3000, lootSlot=3 }
 s = ns.ChooseSwap({ ore, ring }, { bag(0, 0, { scrap }) }, opts)
 T.eq("best of several", s.loot.itemID, 200)
+-- Keys go to the keyring (family 256): a key with keyring room isn't blocked
+local key = I{ itemID=7146, classID=13, family=256 }
+T.eq("key fits keyring", ns.ChooseSwap({ key }, { bag(0, 0, { cloth }), bag(256, 1, {}) }, opts), nil)
+T.eq("keyring holds no sword", ns.Leftover(sword, { bag(0, 0, {}), bag(256, 4, {}) }), 1)
+
+-- Must-have loot gets no stack note (its value is usually 0)
+local stackQuest = I{ itemID=601, classID=12, vendor=0, maxStack=20 }
+s = ns.ChooseSwap({ stackQuest }, { bag(0, 0, { scrap }) }, opts)
+T.eq("musthave has no stack note", { s.state, s.fullStackValue }, { "musthave", nil })
 print("swap_test: all passed")

@@ -26,6 +26,7 @@ T.eq("ammo",             ns.ProtectionReason(I{ classID=6, vendor=1 }, none, 5),
 T.eq("soul shard",       ns.ProtectionReason(I{ itemID=6265 }, none, 5), "soulshard")
 T.eq("no value",         ns.ProtectionReason(I{ vendor=0 }, none, 5), "novalue")
 T.eq("bound, ah only",   ns.ProtectionReason(I{ vendor=0, ah=5000, bound=true }, none, 5), "novalue")
+T.eq("being opened",     ns.ProtectionReason(I{ vendor=25, opening=true }, none, 5), "opening")
 T.eq("reagent ok",       ns.ProtectionReason(I{ classID=7, vendor=13 }, none, 5), nil)
 
 -- MustHaveKind

@@ -86,6 +86,7 @@ function ns.ChooseSwap(lootItems, containers, opts)
             end
             local swap = BuildSwap("musthave", b.loot, b.count, cheapest, threshold)
             swap.mustHaveKind = kind
+            swap.fullStackValue = nil -- must-have loot is usually worth 0; a "0c" note is noise
             return swap
         end
     end

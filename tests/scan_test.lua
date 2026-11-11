@@ -6,7 +6,7 @@ local function link(id) return "|cffffffff|Hitem:" .. id .. "::::::::60:::::|h[I
 
 -- A fake game API built from plain tables (shape documented in Scan.lua).
 local function fakeAPI(spec)
-    local api = { requested = {} }
+    local api = { requested = {}, KEYRING = -2 }
     local function id(x) return type(x) == "number" and x or ns.ItemIDFromLink(x) end
     function api.GetNumLootItems() return #(spec.loot or {}) end
     function api.IsItemSlot(i) return spec.loot[i].isItem ~= false end
@@ -29,7 +29,7 @@ local function fakeAPI(spec)
     function api.GetContainerItemInfo(b, s)
         local it = spec.bags[b].slots[s]
         if not it then return nil end
-        return { itemID = it.id, stackCount = it.count or 1, hyperlink = link(it.id), iconFileID = 134400, quality = 1, isBound = it.bound or false }
+        return { itemID = it.id, stackCount = it.count or 1, hyperlink = link(it.id), iconFileID = 134400, quality = 1, isBound = it.bound or false, isLocked = it.locked or false, hasLoot = it.hasLoot or false }
     end
     function api.GetContainerItemQuestInfo(b, s)
         local it = spec.bags[b].slots[s]
@@ -43,6 +43,7 @@ local items = {
     [200]  = { sellPrice = 1000, classID = 4, bindType = 1 },       -- BoP ring
     [600]  = { sellPrice = 0, classID = 15 },                        -- quest starter
     [2447] = { maxStack = 20, sellPrice = 10, classID = 7, family = 32 }, -- Peacebloom
+    [4371] = { sellPrice = 200, classID = 7 },                       -- Bronze Tube
 }
 
 -- Loot: coin and locked slots are skipped; item slots become records
@@ -88,4 +89,18 @@ T.eq("bags: uncached pending", { ns.ScanBags(fakeAPI({ items = items, bags = {
 local herbBagItems = { [5765] = { classID = 1, family = 32, sellPrice = 500 } }
 loot = ns.ScanLoot(fakeAPI({ items = herbBagItems, loot = { { id = 5765 } } }))
 T.eq("loot: bag item has family 0", loot[1].family, 0)
+-- Keyring is scanned with the keyring family, even if the game reports 0
+bags = ns.ScanBags(fakeAPI({ items = items, bags = {
+    [0]  = { numSlots = 1, free = 0, family = 0, slots = { [1] = { id = 2589 } } },
+    [-2] = { numSlots = 4, free = 4, family = 0, slots = {} },
+} }))
+T.eq("bags: keyring container", { #bags, bags[2].bag, bags[2].family, bags[2].freeSlots }, { 2, -2, 256, 4 })
+
+-- A container being opened (locked, has loot) is flagged; one just picked up (locked only) is not
+bags = ns.ScanBags(fakeAPI({ items = items, bags = {
+    [0] = { numSlots = 2, free = 0, family = 0, slots = {
+        [1] = { id = 2589, locked = true, hasLoot = true },
+        [2] = { id = 4371, locked = true } } },
+} }))
+T.eq("bags: opening flag", { bags[1].items[1].opening, bags[1].items[2].opening }, { true, false })
 print("scan_test: all passed")

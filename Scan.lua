@@ -5,6 +5,7 @@
 local ADDON_NAME, ns = ...
 
 local NUM_BAGS = 4 -- backpack (0) plus bags 1-4
+local KEYRING_FAMILY = 256
 
 -- Fields we read from GetItemInfo's return list
 local function ItemInfo(api, linkOrID)
@@ -59,13 +60,18 @@ function ns.ScanLoot(api)
     return items
 end
 
--- Containers (backpack first, then bags 1-4), or nil, "pending".
+-- Containers (backpack first, then bags 1-4, then the keyring), or nil, "pending".
 function ns.ScanBags(api)
     local containers, pending = {}, false
-    for bag = 0, NUM_BAGS do
+    local bagIDs = {}
+    for bag = 0, NUM_BAGS do bagIDs[#bagIDs + 1] = bag end
+    -- Looted keys go straight to the keyring, so it counts for fitting.
+    if api.KEYRING then bagIDs[#bagIDs + 1] = api.KEYRING end
+    for _, bag in ipairs(bagIDs) do
         local numSlots = api.GetContainerNumSlots(bag) or 0
         if numSlots > 0 then
             local free, family = api.GetContainerNumFreeSlots(bag)
+            if bag == api.KEYRING then family = KEYRING_FAMILY end
             local c = { bag = bag, family = family or 0, freeSlots = free or 0, items = {} }
             for slot = 1, numSlots do
                 local ci = api.GetContainerItemInfo(bag, slot)
@@ -79,6 +85,8 @@ function ns.ScanBags(api)
                         r.icon = ci.iconFileID or r.icon
                         r.quality = ci.quality or r.quality
                         r.bound = ci.isBound and true or false
+                        -- A clam/junkbox you're looting stays locked in the bag until emptied
+                        r.opening = (ci.isLocked and ci.hasLoot) and true or false
                         local q = api.GetContainerItemQuestInfo(bag, slot)
                         r.isQuest = q ~= nil and ((q.isQuestItem and true or false) or q.questID ~= nil)
                         r.bag, r.slot = bag, slot
@@ -101,6 +109,7 @@ function ns.GameAPI()
     local ITEM_SLOT = (Enum and Enum.LootSlotType and Enum.LootSlotType.Item) or LOOT_SLOT_ITEM or 1
 
     return {
+        KEYRING = (Enum and Enum.BagIndex and Enum.BagIndex.Keyring) or KEYRING_CONTAINER,
         GetNumLootItems = GetNumLootItems,
         IsItemSlot = function(i) return GetLootSlotType(i) == ITEM_SLOT end,
         GetLootSlotInfo = GetLootSlotInfo,

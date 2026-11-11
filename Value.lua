@@ -36,6 +36,7 @@ end
 function ns.ProtectionReason(item, userProtected, threshold)
     local D = ns.Data
     if userProtected and userProtected[item.itemID] then return "user" end
+    if item.opening then return "opening" end -- the container you're looting from
     if IsTool(item) then return "tool" end
     if IsQuest(item) then return "quest" end
     if D.TELEPORTS[item.itemID] then return "teleport" end

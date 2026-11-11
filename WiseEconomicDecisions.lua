@@ -154,6 +154,8 @@ events:RegisterEvent("LOOT_SLOT_CLEARED")
 events:RegisterEvent("LOOT_CLOSED")
 events:RegisterEvent("BAG_UPDATE_DELAYED")
 events:RegisterEvent("GET_ITEM_INFO_RECEIVED")
+-- C_Item.RequestLoadItemDataByID reports here; not every client has the event
+pcall(events.RegisterEvent, events, "ITEM_DATA_LOAD_RESULT")
 
 events:SetScript("OnEvent", function(_, event, arg1)
     if event == "ADDON_LOADED" then
