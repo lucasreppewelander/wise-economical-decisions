@@ -4,6 +4,8 @@ A World of Warcraft Forever addon for looting with full bags. When an item in th
 
 A small card appears to the right of the loot window. It shows the item to drop and the item to loot, each with its icon, name and value, and what the swap gains or loses. It's only a suggestion. The addon never deletes, moves or loots anything.
 
+![The swap card next to the loot window, suggesting to drop Malachite to loot a Buzzard Talon](screenshots/wed-main.png)
+
 ## The card
 
 The card only appears when something in the loot window doesn't fit in your bags. It shows one of three things:
