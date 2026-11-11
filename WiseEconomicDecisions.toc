@@ -1,0 +1,15 @@
+## Interface: 11507, 11508, 16001
+## Title: Wise Economic Decisions
+## Notes: When your bags are full, suggests which item to drop to make the most gold from your loot.
+## Author: lucas
+## Version: 1.0.0
+## OptionalDeps: Auctionator
+## SavedVariables: WiseEconomicDecisionsDB
+
+Data.lua
+Value.lua
+Swap.lua
+Commands.lua
+Scan.lua
+Card.lua
+WiseEconomicDecisions.lua
