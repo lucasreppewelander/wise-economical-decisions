@@ -1,0 +1,15 @@
+-- Run from repo root: luajit tests/commands_test.lua
+local T = dofile("tests/helper.lua")
+local ns = T.load({ "Commands.lua" })
+local link = "|cffffffff|Hitem:6948::::::::60:::::|h[Hearthstone]|h|r"
+T.eq("link id",         ns.ItemIDFromLink(link), 6948)
+T.eq("no link",         ns.ItemIDFromLink("hello"), nil)
+T.eq("empty -> help",   ns.ParseSlash(""), { cmd = "help" })
+T.eq("unknown -> help", ns.ParseSlash("foo"), { cmd = "help" })
+T.eq("protect",         ns.ParseSlash("protect " .. link), { cmd = "protect", itemID = 6948 })
+T.eq("unprotect",       ns.ParseSlash("unprotect " .. link), { cmd = "unprotect", itemID = 6948 })
+T.eq("list caps",       ns.ParseSlash("LIST"), { cmd = "list" })
+T.eq("threshold",       ns.ParseSlash("threshold 10"), { cmd = "threshold", number = 10 })
+T.eq("threshold bad",   ns.ParseSlash("threshold abc"), { cmd = "threshold" })
+T.eq("demo",            ns.ParseSlash("demo"), { cmd = "demo" })
+print("commands_test: all passed")
