@@ -49,9 +49,11 @@ Reagents can be suggested if dropping them makes you more money.
 
 ## Installation
 
-1. Download the latest `WiseEconomicDecisions.zip` from the releases page.
+1. **[Download WiseEconomicDecisions.zip](https://github.com/lucasreppewelander/wise-economical-decisions/releases/latest/download/WiseEconomicDecisions.zip)**
 2. Extract it into `World of Warcraft/_forever_/Interface/AddOns/`. You should end up with `AddOns/WiseEconomicDecisions/WiseEconomicDecisions.toc`.
-3. Restart the game or type `/reload`.
+3. Restart the game.
+
+Don't use GitHub's green **Code → Download ZIP** button. It names the folder `wise-economical-decisions-main`, and WoW won't load the addon from a folder with that name.
 
 For auction house prices, install [Auctionator](https://www.curseforge.com/wow/addons/auctionator) and run a scan at the auction house. Without it, the addon uses vendor prices only.
 
